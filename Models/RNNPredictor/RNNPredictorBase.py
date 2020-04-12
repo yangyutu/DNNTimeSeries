@@ -87,6 +87,10 @@ class RNNPredictorBase(object):
         if 'randomSeed' in self.config:
             self.randomSeed = self.config['randomSeed']
 
+        self.verbose = False
+        if 'verbose' in self.config:
+            self.verbose = self.config['verbose']
+
         random.seed(self.randomSeed)
 
     def train_for_steps(self, nstep):
