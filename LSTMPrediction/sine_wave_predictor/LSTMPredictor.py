@@ -19,6 +19,7 @@ class Sequence(nn.Module):
         self.linear = nn.Linear(51, 1)
 
     def forward(self, input, future = 0):
+        # input has shape of (batchSize, seqLen, stateDim)
         outputs = []
         
         h_t = torch.zeros(input.size(0), 51, dtype=torch.double, device = device)
@@ -26,6 +27,7 @@ class Sequence(nn.Module):
         h_t2 = torch.zeros(input.size(0), 51, dtype=torch.double, device = device)
         c_t2 = torch.zeros(input.size(0), 51, dtype=torch.double, device = device)
 
+        # decompose input to seqLen number of chunks, each chunk has shape of (batchSize, stateDim)
         for i, input_t in enumerate(input.chunk(input.size(1), dim=1)):
             h_t, c_t = self.lstm1(input_t, (h_t, c_t))
             h_t2, c_t2 = self.lstm2(h_t, (h_t2, c_t2))
@@ -70,7 +72,7 @@ criterion = nn.MSELoss()
 optimizer = optim.LBFGS(seq.parameters(), lr=0.8)
 #optimizer = optim.SGD(seq.parameters(), lr = 0.8)
 #begin to train
-for i in range(15):
+for i in range(25):
     print('STEP: ', i)
     # see https://pytorch.org/docs/stable/optim.html for why we define a closure
     def closure():

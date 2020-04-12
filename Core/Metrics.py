@@ -10,17 +10,14 @@ def convertToNumpy(x, y):
 
 
 def RSE(y_pred, y_true):
-
-
+    '''root squared sum difference divided by the standard dievation of y_true'''
     y_pred, y_true = convertToNumpy(y_pred, y_true)
-
-    rse = np.sqrt(np.square(y_pred - y_true).sum()) / \
-            np.sqrt(np.square(y_true - y_true.mean()).sum())
+    rse = np.sqrt(np.square(y_pred - y_true).sum()) / np.sqrt(np.square(y_true - y_true.mean()).sum())
     return rse
 
 def QuantileLoss(y_true, y_pred, qs):
     '''
-    Quantile loss version 2
+    Quantile loss version
     Args:
     y_true (batch_size, output_horizon)
     y_pred (batch_size, output_horizon, num_quantiles)
@@ -44,7 +41,7 @@ def SymMeanAPE(y_true, y_pred):
     return np.mean(np.abs((y_true - y_pred) / mean_y))
 
 def MeanAPE(y_true, y_pred):
-
+    '''Mean absolute percentage error'''
     y_pred, y_true = convertToNumpy(y_pred, y_true)
 
     y_true = np.array(y_true).ravel() + 1e-6
